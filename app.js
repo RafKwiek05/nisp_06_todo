@@ -1,99 +1,60 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicjalizacja ikon Lucide
     lucide.createIcons();
-
+    
     const input = document.getElementById('todo-input');
-    const addBtn = document.getElementById('add-btn');
-    const todoList = document.getElementById('todo-list');
-    const dateDisplay = document.getElementById('date-display');
+    const addBtn = document.getElementById('add-task-btn');
+    const list = document.getElementById('todo-list');
+    const themeCheck = document.getElementById('theme-checkbox');
 
-    // Wyświetlanie daty
-    const options = { weekday: 'long', day: 'numeric', month: 'long' };
-    dateDisplay.innerText = new Date().toLocaleDateString('pl-PL', options);
+    // Data
+    document.getElementById('date-text').innerText = new Date().toLocaleDateString('pl-PL', {
+        weekday: 'long', day: 'numeric', month: 'long'
+    });
 
-    // Ładowanie z LocalStorage
-    let todos = JSON.parse(localStorage.getItem('todos')) || [];
-
-    const saveTodos = () => {
-        localStorage.setItem('todos', JSON.stringify(todos));
+    // Theme Logic
+    const setTheme = (isDark) => {
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
     };
 
-    const renderTodos = () => {
-        todoList.innerHTML = '';
-        todos.forEach((todo, index) => {
+    themeCheck.addEventListener('change', (e) => setTheme(e.target.checked));
+
+    if(localStorage.getItem('theme') === 'dark') {
+        themeCheck.checked = true;
+        setTheme(true);
+    }
+
+    // Todo Logic
+    let todos = JSON.parse(localStorage.getItem('my-tasks')) || [];
+
+    const render = () => {
+        list.innerHTML = '';
+        todos.forEach((t, i) => {
             const li = document.createElement('li');
-            if (todo.completed) li.classList.add('completed');
-
+            if(t.done) li.classList.add('done');
             li.innerHTML = `
-                <span class="todo-text">${todo.text}</span>
-                <button class="delete-btn" onclick="deleteTodo(${index})">
-                    <i data-lucide="trash-2"></i>
-                </button>
+                <span class="todo-text">${t.text}</span>
+                <button class="del-btn" onclick="remove(${i})"><i data-lucide="trash-2"></i></button>
             `;
-
-            // Event oznaczania jako ukończone
-            li.querySelector('.todo-text').addEventListener('click', () => toggleTodo(index));
-            
-            todoList.appendChild(li);
+            li.querySelector('.todo-text').onclick = () => toggle(i);
+            list.appendChild(li);
         });
-        lucide.createIcons(); // Odświeżenie ikon w nowych elementach
+        lucide.createIcons();
+        localStorage.setItem('my-tasks', JSON.stringify(todos));
     };
 
-    const addTodo = () => {
-        const text = input.value.trim();
-        if (text) {
-            todos.push({ text, completed: false });
+    window.toggle = (i) => { todos[i].done = !todos[i].done; render(); };
+    window.remove = (i) => { todos.splice(i, 1); render(); };
+
+    addBtn.onclick = () => {
+        if(input.value.trim()) {
+            todos.push({ text: input.value, done: false });
             input.value = '';
-            saveTodos();
-            renderTodos();
+            render();
         }
     };
 
-    window.toggleTodo = (index) => {
-        todos[index].completed = !todos[index].completed;
-        saveTodos();
-        renderTodos();
-    };
+    input.onkeypress = (e) => { if(e.key === 'Enter') addBtn.onclick(); };
 
-    window.deleteTodo = (index) => {
-        todos.splice(index, 1);
-        saveTodos();
-        renderTodos();
-    };
-
-    addBtn.addEventListener('click', addTodo);
-
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') addTodo();
-    });
-
-    renderTodos();
+    render();
 });
-
-// Dodaj to do reszty kodu wewnątrz DOMContentLoaded
-const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-const currentTheme = localStorage.getItem('theme');
-
-// Funkcja zmieniająca motyw
-function switchTheme(e) {
-    if (e.target.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        document.getElementById('theme-text').innerText = "Tryb jasny";
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        document.getElementById('theme-text').innerText = "Tryb ciemny";
-    }
-}
-
-// Sprawdzenie zapisanego motywu
-if (currentTheme) {
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    if (currentTheme === 'dark') {
-        toggleSwitch.checked = true;
-        document.getElementById('theme-text').innerText = "Tryb jasny";
-    }
-}
-
-toggleSwitch.addEventListener('change', switchTheme);
