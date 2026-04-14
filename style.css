@@ -81,7 +81,7 @@ body {
 }
 
 .sun-icon, .moon-icon {
-    position: absolute; width: 14px; top: 4px;
+    position: absolute; width: 14px; top: -1px;
     transition: 0.3s;
 }
 .sun-icon { left: 5px; color: #f59e0b; }
