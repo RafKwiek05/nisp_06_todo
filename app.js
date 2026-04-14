@@ -69,3 +69,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderTodos();
 });
+
+// Dodaj to do reszty kodu wewnątrz DOMContentLoaded
+const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+const currentTheme = localStorage.getItem('theme');
+
+// Funkcja zmieniająca motyw
+function switchTheme(e) {
+    if (e.target.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById('theme-text').innerText = "Tryb jasny";
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        document.getElementById('theme-text').innerText = "Tryb ciemny";
+    }
+}
+
+// Sprawdzenie zapisanego motywu
+if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (currentTheme === 'dark') {
+        toggleSwitch.checked = true;
+        document.getElementById('theme-text').innerText = "Tryb jasny";
+    }
+}
+
+toggleSwitch.addEventListener('change', switchTheme);
