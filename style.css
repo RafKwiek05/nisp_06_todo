@@ -1,0 +1,169 @@
+:root {
+    --primary: #6366f1;
+    --bg-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --glass: rgba(255, 255, 255, 0.8);
+    --text: #1f2937;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f3f4f6;
+    overflow: hidden;
+}
+
+/* Dekoracyjne tło */
+.background-circles {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+}
+
+.circle-1 {
+    width: 400px;
+    height: 400px;
+    background: #818cf8;
+    top: -10%;
+    right: -10%;
+}
+
+.circle-2 {
+    width: 300px;
+    height: 300px;
+    background: #c084fc;
+    bottom: -5%;
+    left: -5%;
+}
+
+/* Kontener główny (Glassmorphism) */
+.todo-container {
+    width: 100%;
+    max-width: 450px;
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 1.8rem;
+    color: var(--text);
+}
+
+#date-display {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+/* Input */
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2rem;
+}
+
+input {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    outline: none;
+    transition: 0.3s;
+    font-size: 1rem;
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+#add-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+}
+
+/* Lista zadań */
+ul {
+    list-style: none;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+li {
+    background: white;
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeIn 0.4s ease forwards;
+    transition: 0.3s;
+}
+
+li.completed {
+    opacity: 0.6;
+}
+
+li.completed span {
+    text-decoration: line-through;
+}
+
+.todo-text {
+    flex: 1;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    padding: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+li:hover .delete-btn {
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

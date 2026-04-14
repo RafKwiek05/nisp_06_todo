@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
- <meta charset="UTF-8">
- <title>TODO App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Flow // Todo</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
- <h1>Moja lista zadań</h1>
- <ul id="task-list"></ul>
- <form>
-    <input type="text" id="text">
-    <button id="dodaj">Dodaj</button>
- </form>
+
+    <div class="background-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+    </div>
+
+    <main class="todo-container">
+        <header>
+            <h1>Dzień dobry</h1>
+            <p id="date-display"></p>
+        </header>
+
+        <section class="input-section">
+            <input type="text" id="todo-input" placeholder="Co masz dziś do zrobienia?" autocomplete="off">
+            <button id="add-btn">
+                <i data-lucide="plus"></i>
+            </button>
+        </section>
+
+        <ul id="todo-list">
+            </ul>
+    </main>
+
+    <script src="app.js"></script>
 </body>
 </html>
